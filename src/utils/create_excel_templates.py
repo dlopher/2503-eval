@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from openpyxl import load_workbook
 from src.config.factor_structure import FACTOR_STRUCTURE
 from src.config.config_linear import MAX_PROJECTS_PER_DISCIPLINA
 
@@ -10,7 +11,7 @@ def create_competitor_template(competitor_id: int, output_dir: str):
     filename = os.path.join(output_dir, f"{int(competitor_id)}.xlsx")
 
     # Create empty DataFrame with required columns
-    base_columns = ["Disciplina", "Projeto", "Dono de obra", "Data", "Valor da obra", "Status", "Observações"]
+    base_columns = ["Disciplina", "Projeto", "Dono de obra", "Data", "Valor de obra", "Status", "Observações"]
 
     with pd.ExcelWriter(filename, engine='openpyxl') as writer:
         # Create a sheet for each factor
@@ -23,6 +24,14 @@ def create_competitor_template(competitor_id: int, output_dir: str):
             
             df = pd.DataFrame(rows, columns=base_columns)
             df.to_excel(writer, sheet_name=f"Factor_{factor_id}", index=False)
+    
+    # Set column widths
+    wb = load_workbook(filename)
+    for sheet in wb.sheetnames:
+        ws = wb[sheet]
+        for column in ws.columns:
+            ws.column_dimensions[column[0].column_letter].width = 21
+    wb.save(filename)
     
     return filename
 

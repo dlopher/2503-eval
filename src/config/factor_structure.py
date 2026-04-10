@@ -4,59 +4,59 @@ from typing import Dict, List
 # Define factor structure
 FACTOR_STRUCTURE = {
     "A1": {
-        "name": "Projetos de obras executadas de edifícios de utilização coletiva na UE",
+        "name": "Obras de edifícios de Ut. Colectiva na UE",
         "type": "projeto",
         "require_date": True,
         "require_owner": True,
         "disciplinas": [
-            "Coordenação", 
+            "Coordenação",
+            "BIM",
             "ARQ", 
             "ArqPAIS", 
             "Estruturas", 
-            "AVACR",
-            "BIM"
+            "AVACR"
         ]
     },
     "A2": {
-        "name": "Projetos de obras executadas de edifícios escolares na UE",
+        "name": "Obras de edifícios escolares na UE",
         "type": "projeto",
         "require_date": True,
         "require_owner": True,
         "disciplinas": [
-            "Coordenação", 
+            "Coordenação",
+            "BIM",
             "ARQ", 
             "ArqPAIS", 
             "Estruturas", 
-            "AVACR",
-            "BIM"
+            "AVACR"
         ]
     },
     "A3": {
-        "name": "Projetos de obras públicas executadas na UE",
+        "name": "Obras públicas na UE",
         "type": "projeto",
         "require_date": True,
         "require_owner": True,
         "disciplinas": [
-            "Coordenação", 
+            "Coordenação",
+            "BIM",
             "ARQ", 
             "ArqPAIS", 
             "Estruturas", 
-            "AVACR",
-            "BIM"
+            "AVACR"
         ]
     },
     "A4": {
-        "name": "Projetos de obras executadas de reabilitação de edifícios (com reforço sísmico) na UE",
+        "name": "Obras de reabilitação com reforço sísmico na UE",
         "type": "projeto",
         "require_date": True,
         "require_owner": True,
         "disciplinas": [
-            "Coordenação", 
+            "Coordenação",
+            "BIM",
             "ARQ", 
             "ArqPAIS", 
             "Estruturas", 
-            "AVACR",
-            "BIM"
+            "AVACR"
         ]
     },
     "A5": {

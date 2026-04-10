@@ -15,6 +15,8 @@ ACCEPTED_DATE_FORMATS = [
     '%d/%m/%y',   # dd/mm/yy
     '%d-%m-%Y',   # dd-mm-yyyy
     '%d-%m-%y',   # dd-mm-yy
+    '%m/%Y',      # mm/yyyy
+    '%Y',         # yyyy
 ]
 
 

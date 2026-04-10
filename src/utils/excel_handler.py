@@ -181,7 +181,7 @@ def read_excel_folder(input_dir: str = "data/input") -> List[Concorrente]:
                         
                         projeto_cost = float(row["Valor de obra"])
                         current_obs = age_obs
-                        current_status = age_status
+                        current_status = "" if is_valid else "DESCL"
                         
                         # Check for duplicate names and value consistency
                         if projeto_name in projeto_registry:

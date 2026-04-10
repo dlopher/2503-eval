@@ -74,13 +74,13 @@ def evaluate_bids(curve_functions=None, curve_names=None, test_mode=False):
     for results, curve_name, curve_function in all_results:
         print("\n")
         print(f"\n{curve_name.upper()} CURVE EVALUATION:")
-        header = f"{'ID':<12}{'Nome':<24}{'Preço (€)':<24}{'Pontuação':<14}{'Status':<12}{'PAB':<6}"
+        header = f"{'ID':<12}{'Nome':<48}{'Preço (€)':<24}{'Pontuação':<14}{'Status':<12}{'PAB':<6}"
         sep = "-" * len(header)
         print(header)
         print(sep)
         for bid_id, name, price, score, status, pab in results:
             pontos_str = f"{score:<14.6f}" if status == "OK" else " " * 14
-            print(f"{bid_id:<12}{name:<24}{price:<24,.2f}{pontos_str}{status:<12}{pab:<6}")
+            print(f"{bid_id:<12}{name:<48}{price:<24,.2f}{pontos_str}{status:<12}{pab:<6}")
 
     # Print to .txt file with timestamp
     if bids:
@@ -118,7 +118,7 @@ def evaluate_bids(curve_functions=None, curve_names=None, test_mode=False):
                 f.write(f"Constants: {constants_str}\n\n")
 
                 # Write table header
-                header = f"{'ID':<12}{'Nome':<24}{'Preço (€)':<24}{'Pontuação':<14}{'Status':<12}{'PAB':<6}"
+                header = f"{'ID':<12}{'Nome':<48}{'Preço (€)':<24}{'Pontuação':<14}{'Status':<12}{'PAB':<6}"
                 sep = "-" * len(header)
                 f.write(header + "\n")
                 f.write(sep + "\n")
@@ -126,7 +126,7 @@ def evaluate_bids(curve_functions=None, curve_names=None, test_mode=False):
                 # Write bid results
                 for bid_id, name, price, score, status, pab in results:
                     pontos_str = f"{score:<14.6f}" if status == "OK" else " " * 14
-                    f.write(f"{bid_id:<12}{name:<24}{price:<24,.2f}{pontos_str}{status:<12}{pab:<6}\n")
+                    f.write(f"{bid_id:<12}{name:<48}{price:<24,.2f}{pontos_str}{status:<12}{pab:<6}\n")
 
             f.write("\n" + "=" * 80 + "\n")
 
@@ -314,10 +314,13 @@ def evaluate_bids(curve_functions=None, curve_names=None, test_mode=False):
     # Group by bid_id
     by_bid = {}
     for h, l in zip(handles, labels):
-        bid_id = int(l.split()[1])  # Convert to integer for proper numeric sorting
-        if bid_id not in by_bid:
-            by_bid[bid_id] = []
-        by_bid[bid_id].append((h, l))
+        import re
+        match = re.search(r'(\d+)\s*-\s*[\d,.€]+', l)
+        if match:
+            bid_id = int(match.group(1))
+            if bid_id not in by_bid:
+                by_bid[bid_id] = []
+            by_bid[bid_id].append((h, l))
     
     # Flatten the grouped bids
     for bid_id in sorted(by_bid.keys()):  # Now sorted numerically

@@ -12,6 +12,11 @@ def parse_date(date_input) -> tuple:
     - datetime_obj: parsed date or None
     - is_valid: True if format is correct, False if unparseable
     - observation: error message if invalid
+
+    Parsing rules:
+    - yyyy → January 1st of that year
+    - mm/yyyy → First day of that month
+    - dd/mm/yyyy or dd/mm/yy → Exact date
     """
 
     if isinstance(date_input, datetime):
@@ -25,7 +30,21 @@ def parse_date(date_input) -> tuple:
     # Try yyyy format
     if re.match(r'^\d{4}$', date_str):
         try:
-            return datetime(int(date_str), 12, 31), True, ""
+            year = int(date_str)
+            return datetime(year, 1, 1), True, ""
+        except:
+            return None, False, f"formato de data invalido: '{date_str}'"
+    
+    # Try mm/yyyy format
+    if re.match(r'^\d{1,2}/\d{4}$', date_str):
+        try:
+            parts = date_str.split('/')
+            month = int(parts[0])
+            year = int(parts[1])
+            if 1 <= month <= 12:
+                return datetime(year, month, 1), True, ""
+            else:
+                return None, False, f"mês invalido: '{month}'"
         except:
             return None, False, f"formato de data invalido: '{date_str}'"
     

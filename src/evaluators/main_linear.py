@@ -4,11 +4,12 @@ import matplotlib.ticker as mticker
 import numpy as np
 import os
 
+from src.config.factor_structure import FACTOR_STRUCTURE
 from src.config.config_linear import FACTOR_THRESHOLDS, FACTOR_WEIGHTS, MAX_PROJECTS_PER_DISCIPLINA, MIN_SCORE_PER_PROJECT, MAX_SCORE_PER_PROJECT
 from src.utils.curves import linear_abs
 from src.utils.excel_handler import read_excel_folder
 
-def evaluate_linear_abs(use_excel: bool = False, excel_dir: str = "data/input"):
+def evaluate_linear_abs(use_excel: bool = True, excel_dir: str = "data/input"):
     """
     Evaluate competitors using linear absolute scoring
     
@@ -54,7 +55,13 @@ def evaluate_linear_abs(use_excel: bool = False, excel_dir: str = "data/input"):
 
     for comp in competitors: 
         for factor in comp.factors:
-            for disciplina in factor.disciplinas:
+            factor_config = FACTOR_STRUCTURE[factor.id]
+            disciplina_order = factor_config["disciplinas"]
+            
+            for disciplina_name in disciplina_order:
+                disciplina = next((d for d in factor.disciplinas if d.name == disciplina_name), None)
+                if disciplina is None:
+                    continue
 
                 if factor.id == "A5":
                     # A5: Sum hours instead of evaluating projects individually

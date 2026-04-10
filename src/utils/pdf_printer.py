@@ -10,7 +10,7 @@ PAGE_SIZES = {
     "A3": A3
 }
 
-def txt_to_pdf(input_txt, font_name="Courier", base_font_size=12, page_size=A4, landscape_mode=False):
+def txt_to_pdf(input_txt, font_name="Courier", base_font_size=10, page_size=A4, landscape_mode=False):
     # Derive output name (same as input but with .pdf extension)
     root, _ = os.path.splitext(input_txt)
     output_pdf = root + ".pdf"

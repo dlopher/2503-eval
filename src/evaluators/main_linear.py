@@ -1,3 +1,4 @@
+import argparse
 from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -254,4 +255,13 @@ def evaluate_linear_abs(use_excel: bool = True, excel_dir: str = "data/input"):
     print(f"\nTable saved to: {txt_file}")
 
 if __name__ == "__main__":
-    evaluate_linear_abs()
+    parser = argparse.ArgumentParser(description="Evaluate competitors using linear scoring applied on value of works")
+    parser.add_argument("--no-excel", action="store_true", help="Use hardcoded test data instead of excel files")
+    parser.add_argument("--excel-dir", type=str, default="data/input", help="Directory containing Excel inpiut files")
+
+    args = parser.parse_args()
+
+    use_excel = not args.no_excel
+    excel_dir = args.excel_dir
+
+    evaluate_linear_abs(use_excel=use_excel, excel_dir=excel_dir)

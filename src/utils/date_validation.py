@@ -49,17 +49,33 @@ def parse_date(date_input) -> tuple:
             return None, False, f"formato de data invalido: '{date_str}'"
     
     # Try dd/mm/yyyy or dd/mm/yy
+    if re.match(r'^\d{1,2}/\d{1,2}/\d{2,4}$', date_str):
+        parts = date_str.split('/')
+        first = int(parts[0])
+        second = int(parts[1])
+        
+        # If month > day, assume they were swapped (mm/dd instead of dd/mm)
+        if second > first and first <= 12:
+            corrected_str = f"{second}/{first}/{parts[2]}"
+            for fmt in ACCEPTED_DATE_FORMATS:
+                try:
+                    parsed = datetime.strptime(corrected_str, fmt)
+                    return parsed, True, ""
+                except:
+                    continue
+
     for fmt in ACCEPTED_DATE_FORMATS:
         try:
             parsed = datetime.strptime(date_str, fmt)
             return parsed, True, ""
         except:
             continue
+    
     # if we reach here, format is invalid
     return None, False, f"formato de data invalido: '{date_str}'"
 
 
-def validate_date(date_obj: datetime, item_type: str = "projeto") -> tuple:
+def validate_date(date_obj: datetime, date_input, item_type: str = "projeto") -> tuple:
     """
     Validate date against age limit.
     Returns: (is_valid, status, observation)
@@ -79,10 +95,15 @@ def validate_date(date_obj: datetime, item_type: str = "projeto") -> tuple:
         year_diff -= 1
     elif date_obj.month == CURRENT_DATE.month and date_obj.day > CURRENT_DATE.day:
         year_diff -= 1
+
+    if isinstance(date_input, datetime):
+        date_display = date_input.strftime('%d/%m/%Y')
+    else:
+        date_display = str(date_input).strip()
     
     if year_diff > limit_years:
-        return False, "DESCL", f"Excede limite de {limit_years} anos (antiguedade: {year_diff} anos)"
+        return False, "DESCL", f"Excede limite de {limit_years} anos (data: {date_display}, antiguedade: {year_diff} anos)"
     elif year_diff == limit_years:
-        return True, "AVISO", f"No limite de {limit_years} anos (antiguedade: {year_diff} anos. Verificar data)"
+        return True, "AVISO", f"No limite de {limit_years} anos (data: {date_display})"
     else:
         return True, "", ""

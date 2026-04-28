@@ -128,7 +128,7 @@ def read_excel_folder(input_dir: str = "data/input") -> List[Concorrente]:
                                 formacoes.append(formacao)
                                 continue
                             # Date is valid, validate age
-                            is_valid, status, obs = validate_date(date_obj, item_type="formacao")
+                            is_valid, status, obs = validate_date(date_obj, row.get("Data", None), item_type="formacao")
                             date_obs = obs
                         
                         # If we get here, all validations passed
@@ -177,7 +177,7 @@ def read_excel_folder(input_dir: str = "data/input") -> List[Concorrente]:
                             continue
                         
                         # Validate age
-                        is_valid, age_status, age_obs = validate_date(date_obj, item_type="projeto")
+                        is_valid, age_status, age_obs = validate_date(date_obj, row.get("Data", None), item_type="projeto")
                         
                         projeto_cost = float(row["Valor de obra"])
                         current_obs = age_obs
